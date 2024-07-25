@@ -1,0 +1,34 @@
+<!-- Se existir um cliente, chama a função atualizar cliente, seleciona o método PUT e usa o c-swap para substituir o conteúdo, senão chama a função inserir cliente, seleciona o método POST e usa o c-append para adicionar o conteúdo -->
+
+<form class="c-form"
+        {% if cliente %}
+            action="{{ url_for('cliente.atualizar_cliente', cliente_id=cliente.id) }}"
+            method="PUT"
+            c-swap="#cliente-{{ cliente.id }}"
+        {% else %}
+            action="{{ url_for('cliente.inserir_cliente') }}"
+            method="POST"
+            c-append="#lista-clientes"
+        {% endif %}
+        
+        
+        c-reload-container="true">
+        <!-- Usa # porque marcamos o lugar onde serão enviados os dados informados pelo o usuário com o id "lista_clientes" (visualizar no arquivo lista_clientes.html) -->
+        <!-- classe c-form impede que a página seja apenas carregada, ele obtém os dados informados, permitindo qualquer ação com os mesmos --> 
+        <!-- atributo c-append permite adicionar o conteúdo do formulário a alguma estrutura HTML  -->
+
+        <!-- c-alguma coisa... envolve a biblioteca cru.js dentro da pasta static -->
+    <div class="mb-3">
+        <label class="form-label">Nome</label>
+        <input type="text" class="form-control" name="nome" {% if cliente %}value="{{ cliente.nome }}"{% endif %}> <!-- Se tiver um cliente, puxa o nome do cliente -->
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">E-mail</label>
+        <input type="email" class="form-control" name="email" {% if cliente %}value="{{ cliente.email }}"{% endif %}> <!-- Se tiver um cliente, puxa o email do cliente -->
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        {% if cliente %} Atualizar Cliente {% else %} Adicionar cliente {% endif %}
+    </button>
+</form>
